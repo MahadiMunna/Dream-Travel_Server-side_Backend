@@ -66,9 +66,9 @@ async function run (){
                     userId: req.query.id
                 }
             }
-            const cursor = reviewCollection.find(query);
-            const review = await cursor.toArray();
-            res.send(review);
+            const cursor = myServiceCollection.find(query);
+            const services = await cursor.toArray();
+            res.send(services);
         })
 
         app.post('/reviews',async(req,res)=>{
