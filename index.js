@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -25,6 +25,15 @@ async function run (){
             const services = await cursor.toArray();
             res.send(services);
         })
+
+        app.get('/service-details/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id:ObjectId(id)};
+            const service = await serviceCollection.findOne(query);
+            res.send(service);
+            console.log(service);
+
+        })
     }
     finally{
 
@@ -39,4 +48,4 @@ app.get('/',(req,res)=>{
 
 app.listen(port,()=>{
     console.log(`Dream travel server running on ${port}`);
-})
+});
