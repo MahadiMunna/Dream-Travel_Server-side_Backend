@@ -19,6 +19,7 @@ async function run (){
     try{
         const serviceCollection = client.db('dreamTravel').collection('services');
         const reviewCollection = client.db('dreamTravel').collection('reviews');
+        const myServiceCollection = client.db('dreamTravel').collection('myServices');
 
         app.get('/services',async(req,res)=>{
             const query = {};
@@ -46,9 +47,26 @@ async function run (){
             res.send(review);
         })
 
+        app.get('/reviews',async(req,res)=>{
+            let query = {};
+            if(req.query.id){
+                query = {
+                    userId: req.query.id
+                }
+            }
+            const cursor = reviewCollection.find(query);
+            const review = await cursor.toArray();
+            res.send(review);
+        })
+
         app.post('/reviews',async(req,res)=>{
             const review = req.body;
             const result = reviewCollection.insertOne(review);
+            res.send(result);
+        })
+        app.post('/my-services',async(req,res)=>{
+            const service = req.body;
+            const result = myServiceCollection.insertOne(service);
             res.send(result);
         })
     }
