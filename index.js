@@ -47,7 +47,19 @@ async function run (){
             res.send(review);
         })
 
-        app.get('/reviews',async(req,res)=>{
+        app.get('/my-reviews',async(req,res)=>{
+            let query = {};
+            if(req.query.userId){
+                query = {
+                    userId: req.query.userId
+                }
+            }
+            const cursor = reviewCollection.find(query);
+            const review = await cursor.toArray();
+            res.send(review);
+        })
+
+        app.get('/my-services',async(req,res)=>{
             let query = {};
             if(req.query.id){
                 query = {
@@ -64,6 +76,7 @@ async function run (){
             const result = reviewCollection.insertOne(review);
             res.send(result);
         })
+
         app.post('/my-services',async(req,res)=>{
             const service = req.body;
             const result = myServiceCollection.insertOne(service);
